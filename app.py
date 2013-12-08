@@ -23,7 +23,7 @@ def index():
     SMS = "Yo, %s is at the door." % (fro)
 
     for number in local_settings.team_numbers:
-        send_text(number, fro)
+        send_text(number, SMS)
     return render_template("root.xml", **{})
 
 
