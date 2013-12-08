@@ -1,9 +1,27 @@
+import os
+import json
 import twilio
 import local_settings
 from twilio.rest import TwilioRestClient
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+
+data = json.load(open(os.path.join(
+    os.path.abspath(os.path.dirname(__file__)),
+    "numbers.json"
+)))
+
+
+def cleanup(thing):
+    thing = thing.replace(" ", "")
+    thing = thing.replace(".", "")
+    thing = thing.replace("(", "")
+    thing = thing.replace(")", "")
+    thing = thing.replace("-", "")
+    thing = thing.replace("+", "")
+    thing = thing[-10:]
+    return thing
 
 
 def send_text(whom, message):
@@ -18,8 +36,7 @@ def send_text(whom, message):
 
 @app.route('/')
 def index():
-
-    fro = request.args.get('From', None)
+    fro = cleanup(request.args.get('From', None))
     SMS = "Yo, %s is at the door." % (fro)
 
     for number in local_settings.team_numbers:
