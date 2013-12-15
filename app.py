@@ -14,6 +14,9 @@ data = json.load(open(os.path.join(
 
 
 def cleanup(thing):
+    if thing is None:
+        return None
+
     thing = thing.replace(" ", "")
     thing = thing.replace(".", "")
     thing = thing.replace("(", "")
