@@ -34,9 +34,9 @@ def send_text(whom, message):
 
 
 
-@app.route('/')
-def index():
-    fro = cleanup(request.args.get('From', None))
+@app.route('/voice')
+def voice():
+    fro = cleanup(request.form.get('From', None))
     SMS = "Yo, %s is at the door." % (fro)
 
     if fro in data:
@@ -45,6 +45,11 @@ def index():
     for number in local_settings.team_numbers:
         send_text(number, SMS)
     return render_template("root.xml", **{})
+
+
+@app.route('/sms')
+def sms():
+    pass
 
 
 if __name__ == '__main__':
