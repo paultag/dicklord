@@ -37,7 +37,7 @@ def send_text(whom, message):
 
 
 
-@app.route('/voice')
+@app.route('/voice', methods=['POST'])
 def voice():
     fro = cleanup(request.form.get('From', None))
     SMS = "Yo, %s is at the door." % (fro)
@@ -50,7 +50,7 @@ def voice():
     return render_template("root.xml", **{})
 
 
-@app.route('/sms')
+@app.route('/sms', methods=['POST'])
 def sms():
     pass
 
