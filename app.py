@@ -47,12 +47,22 @@ def voice():
 
     for number in local_settings.team_numbers:
         send_text(number, SMS)
-    return render_template("root.xml", **{})
+    return render_template("voice.xml", **{})
 
 
 @app.route('/sms', methods=['POST'])
 def sms():
-    pass
+    fro = cleanup(request.form.get('From', None))
+    msg = request.form.get('Body', None)
+
+    SMS = "From %s" % (fro)
+    if fro in data:
+        SMS += " (%s)" % (data[fro])
+    SMS += " %s" % (msg)
+
+    for number in local_settings.team_numbers:
+        send_text(number, SMS)
+    return render_template("sms.xml", **{})
 
 
 if __name__ == '__main__':
