@@ -1,6 +1,7 @@
 import os
 import json
 import twilio
+import requests
 import local_settings
 from twilio.rest import TwilioRestClient
 from flask import Flask, render_template, request
@@ -36,9 +37,17 @@ def send_text(whom, message):
                            body=message)
 
 
+def send_yo():
+    requests.post(
+        "http://api.justyo.co/yoall/",
+        data={"api_token": local_settings.yoapp_token}
+    )
+
 
 @app.route('/voice', methods=['POST'])
 def voice():
+    send_yo()
+
     fro = cleanup(request.form.get('From', None))
     SMS = "Yo, %s is at the door." % (fro)
 
@@ -63,6 +72,11 @@ def sms():
     for number in local_settings.team_numbers:
         send_text(number, SMS)
     return render_template("sms.xml", **{})
+
+
+@app.route('/yo', methods=['POST'])
+def yo():
+    pass
 
 
 if __name__ == '__main__':
